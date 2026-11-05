@@ -105,6 +105,25 @@ I use STM32CubeIDE version 2.2 for Windows. If you use a different version, migr
 6. Click Finish.
 
 
+### Building and flashing without STM32CubeIDE (pedalflash)
+
+`pedalflash` (in the [IFX-Guitar-DSP](https://github.com/Leeman1982/IFX-Guitar-DSP) repo,
+`tools/pedalflash/`) builds this project straight from its `.cproject`, with no IDE needed:
+- it resolves the absolute `C:/Users/...` linked folders in `.project`;
+- it fetches the DaisySP submodule;
+- it downloads a pinned, SHA-256-checked Arm GCC and OpenOCD.
+
+Then it flashes through the ST-Link:
+
+```
+python3 pedalflash.py setup                    # once
+python3 pedalflash.py go path/to/GuitarPedalSTM32 --board guitarml
+```
+
+This PCB has no USB connection to the MCU (PA11 drives an LED), so it can only be flashed
+through the JTAG/SWD header with an ST-Link. USB DFU is not possible. Keep the 9 V supply
+connected while flashing. You still need to set the option bytes below once.
+
 ### Set the Boot Configuration Bytes (option bytes)
 
 You may need to use STM32CubeProgrammer to set the boot configuration bytes, telling the MCU to boot from flash.
